@@ -10,28 +10,35 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-const val DEFAULT_QUOTE = "Don't take it personally."
+//const val DEFAULT_QUOTE = "Don't take it personally."
 
-class AdviceGeneratorViewModel: ViewModel() {
+class AdviceGeneratorViewModel : ViewModel() {
     companion object {
         const val TAG = "AdviceGeneratorViewModel"
     }
 
-    private val _uiState = MutableStateFlow(AdviceGeneratorUiState(advice = DEFAULT_QUOTE))
+    private val _uiState =
+        MutableStateFlow<AdviceGeneratorUiState>(AdviceGeneratorUiState.Loading)
+
     val uiState = _uiState.asStateFlow()
 
     fun getNextAdvice() {
         viewModelScope.launch {
+            _uiState.update { _ -> AdviceGeneratorUiState.Loading }
+
             try {
                 val advice = AdviceGeneratorApi.retrofitService.getAdvice()
                 Log.d(TAG, advice)
-                _uiState.update {
-                    currentState -> currentState.copy(advice = advice)
-                }
+                _uiState.update { _ -> AdviceGeneratorUiState.Success(advice) }
             } catch (e: IOException) {
                 Log.d(TAG, e.message.toString())
+                _uiState.update { _ -> AdviceGeneratorUiState.Error }
             }
         }
+    }
+
+    init {
+        getNextAdvice()
     }
 
 }
