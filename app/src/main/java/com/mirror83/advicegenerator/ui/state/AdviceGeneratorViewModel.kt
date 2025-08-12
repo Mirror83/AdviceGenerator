@@ -3,6 +3,7 @@ package com.mirror83.advicegenerator.ui.state
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mirror83.advicegenerator.network.AdviceApiResponse
 import com.mirror83.advicegenerator.network.AdviceGeneratorApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,9 +28,11 @@ class AdviceGeneratorViewModel : ViewModel() {
             _uiState.update { _ -> AdviceGeneratorUiState.Loading }
 
             try {
-                val advice = AdviceGeneratorApi.retrofitService.getAdvice()
-                Log.d(TAG, advice)
-                _uiState.update { _ -> AdviceGeneratorUiState.Success(advice) }
+                val response: AdviceApiResponse = AdviceGeneratorApi.retrofitService.getAdvice()
+                Log.d(TAG, response.toString())
+                _uiState.update { _ ->
+                    AdviceGeneratorUiState.Success(response.advice.content)
+                }
             } catch (e: IOException) {
                 Log.d(TAG, e.message.toString())
                 _uiState.update { _ -> AdviceGeneratorUiState.Error }
