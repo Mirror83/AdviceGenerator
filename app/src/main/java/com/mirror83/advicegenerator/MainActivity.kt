@@ -42,6 +42,7 @@ import com.mirror83.advicegenerator.ui.theme.AdviceGeneratorTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
             AdviceGeneratorTheme {
