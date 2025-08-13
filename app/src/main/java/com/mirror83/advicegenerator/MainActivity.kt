@@ -53,7 +53,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AdviceGeneratorApp(adviceGeneratorViewModel: AdviceGeneratorViewModel = viewModel()) {
+fun AdviceGeneratorApp(
+    adviceGeneratorViewModel: AdviceGeneratorViewModel =
+        viewModel(factory = AdviceGeneratorViewModel.Factory)
+) {
     val adviceGeneratorUiState = adviceGeneratorViewModel.uiState.collectAsState().value
     val isLoading = adviceGeneratorUiState is AdviceGeneratorUiState.Loading
 
@@ -122,7 +125,9 @@ fun RandomAdviceCard(advice: Advice, modifier: Modifier = Modifier) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize().padding(8.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
         ) {
             Text(text = "Advice #${advice.id}", style = MaterialTheme.typography.titleSmall)
             Spacer(modifier = Modifier.height(8.dp))
