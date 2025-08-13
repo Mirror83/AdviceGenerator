@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mirror83.advicegenerator.network.Advice
 import com.mirror83.advicegenerator.ui.state.AdviceGeneratorUiState
 import com.mirror83.advicegenerator.ui.state.AdviceGeneratorViewModel
 import com.mirror83.advicegenerator.ui.theme.AdviceGeneratorTheme
@@ -74,8 +77,9 @@ fun AdviceGeneratorApp(adviceGeneratorViewModel: AdviceGeneratorViewModel = view
                 is AdviceGeneratorUiState.Success -> RandomAdviceCard(
                     advice = adviceGeneratorUiState.advice,
                     modifier = Modifier
-                        .padding(16.dp)
                         .widthIn(100.dp, 400.dp)
+                        .heightIn(100.dp, 200.dp)
+                        .padding(16.dp)
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -112,13 +116,17 @@ fun NewRandomAdviceButton(getNextAdvice: () -> Unit, isLoading: Boolean) {
 }
 
 @Composable
-fun RandomAdviceCard(advice: String, modifier: Modifier = Modifier) {
-    Card {
-        Text(
-            text = advice,
-            textAlign = TextAlign.Center,
-            modifier = modifier
-        )
+fun RandomAdviceCard(advice: Advice, modifier: Modifier = Modifier) {
+    Card(modifier = modifier) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize().padding(8.dp)
+        ) {
+            Text(text = "Advice #${advice.id}", style = MaterialTheme.typography.titleSmall)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = advice.content, textAlign = TextAlign.Center)
+        }
     }
 }
 
@@ -126,6 +134,6 @@ fun RandomAdviceCard(advice: String, modifier: Modifier = Modifier) {
 @Composable
 fun RandomAdviceCardPreview() {
     AdviceGeneratorTheme {
-        RandomAdviceCard("Don't take it personally.")
+        RandomAdviceCard(Advice(1, "Don't take it personally."))
     }
 }
