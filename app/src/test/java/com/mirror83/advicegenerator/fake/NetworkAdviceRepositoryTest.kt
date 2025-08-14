@@ -9,7 +9,7 @@ class NetworkAdviceRepositoryTest {
     @Test
     fun networkAdviceRepository_getAdvice_verifyAdvice() = runTest {
         val repository =
-            NetworkAdviceRepository(adviceGeneratorApiService = FakeAdviceGeneratorApiService())
+            NetworkAdviceRepository(adviceApiService = FakeAdviceApiService())
         assertEquals(
             FakeDataSource.adviceSet.first().advice,
             repository.getAdvice()

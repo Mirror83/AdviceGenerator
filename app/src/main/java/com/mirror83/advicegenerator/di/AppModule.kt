@@ -2,7 +2,7 @@ package com.mirror83.advicegenerator.di
 
 import com.mirror83.advicegenerator.data.AdviceRepository
 import com.mirror83.advicegenerator.data.NetworkAdviceRepository
-import com.mirror83.advicegenerator.network.AdviceGeneratorApiService
+import com.mirror83.advicegenerator.network.AdviceApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +22,7 @@ object AppModule {
      * */
     @Provides
     @Singleton
-    fun provideAdviceGeneratorApiService(): AdviceGeneratorApiService {
+    fun provideAdviceGeneratorApiService(): AdviceApiService {
         val baseUrl = "https://api.adviceslip.com"
 
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -42,8 +42,8 @@ object AppModule {
             .baseUrl(baseUrl)
             .build()
 
-        val retrofitService: AdviceGeneratorApiService by lazy {
-            retrofit.create(AdviceGeneratorApiService::class.java)
+        val retrofitService: AdviceApiService by lazy {
+            retrofit.create(AdviceApiService::class.java)
         }
 
         return retrofitService
@@ -51,9 +51,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAdviceRepository(adviceGeneratorApiService: AdviceGeneratorApiService): AdviceRepository {
+    fun provideAdviceRepository(adviceApiService: AdviceApiService): AdviceRepository {
         val adviceRepository: AdviceRepository by lazy {
-            NetworkAdviceRepository(adviceGeneratorApiService)
+            NetworkAdviceRepository(adviceApiService)
         }
 
         return adviceRepository
