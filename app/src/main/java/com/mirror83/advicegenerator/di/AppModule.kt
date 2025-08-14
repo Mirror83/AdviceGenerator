@@ -42,21 +42,13 @@ object AppModule {
             .baseUrl(baseUrl)
             .build()
 
-        val retrofitService: AdviceApiService by lazy {
-            retrofit.create(AdviceApiService::class.java)
-        }
-
-        return retrofitService
+        return retrofit.create(AdviceApiService::class.java)
     }
 
     @Provides
     @Singleton
     fun provideAdviceRepository(adviceApiService: AdviceApiService): AdviceRepository {
-        val adviceRepository: AdviceRepository by lazy {
-            NetworkAdviceRepository(adviceApiService)
-        }
-
-        return adviceRepository
+        return NetworkAdviceRepository(adviceApiService)
     }
 
 }
