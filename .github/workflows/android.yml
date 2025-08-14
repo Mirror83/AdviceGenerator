@@ -24,3 +24,12 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Run unit tests
+      run: ./gradlew testDebugUnitTest
+  # Optional: Add this step to run instrumented tests (requires an emulator or device)
+  # This example uses a pre-configured GitHub Actions emulator
+  # - name: Run instrumented tests
+  #   uses: reactivecircus/android-emulator-runner@v2
+  #   with:
+  #     api-level: 29 # Choose an API level appropriate for your tests
+  #     script: ./gradlew connectedCheck # Or connectedDebugAndroidTest

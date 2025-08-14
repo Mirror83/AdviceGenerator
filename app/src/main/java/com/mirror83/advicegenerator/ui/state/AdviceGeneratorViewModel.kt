@@ -1,21 +1,21 @@
 package com.mirror83.advicegenerator.ui.state
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.mirror83.advicegenerator.AdviceGeneratorApplication
 import com.mirror83.advicegenerator.data.AdviceRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
+import javax.inject.Inject
 
 //const val DEFAULT_QUOTE = "Don't take it personally."
 
-class AdviceGeneratorViewModel(private val adviceRepository: AdviceRepository) : ViewModel() {
+@HiltViewModel
+class AdviceGeneratorViewModel
+    @Inject constructor(private val adviceRepository: AdviceRepository) : ViewModel() {
     private val _uiState =
         MutableStateFlow<AdviceGeneratorUiState>(AdviceGeneratorUiState.Loading)
 
@@ -31,16 +31,6 @@ class AdviceGeneratorViewModel(private val adviceRepository: AdviceRepository) :
                 }
             } catch (_: IOException) {
                 _uiState.update { _ -> AdviceGeneratorUiState.Error }
-            }
-        }
-    }
-
-    companion object {
-        val Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as AdviceGeneratorApplication)
-                val adviceRepository = application.container.adviceRepository
-                AdviceGeneratorViewModel(adviceRepository = adviceRepository)
             }
         }
     }
