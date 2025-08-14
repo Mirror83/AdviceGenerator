@@ -38,7 +38,9 @@ import com.mirror83.advicegenerator.network.Advice
 import com.mirror83.advicegenerator.ui.state.AdviceGeneratorUiState
 import com.mirror83.advicegenerator.ui.state.AdviceGeneratorViewModel
 import com.mirror83.advicegenerator.ui.theme.AdviceGeneratorTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +56,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AdviceGeneratorApp(
-    adviceGeneratorViewModel: AdviceGeneratorViewModel =
-        viewModel(factory = AdviceGeneratorViewModel.Factory)
+    adviceGeneratorViewModel: AdviceGeneratorViewModel = viewModel()
 ) {
     val adviceGeneratorUiState = adviceGeneratorViewModel.uiState.collectAsState().value
     val isLoading = adviceGeneratorUiState is AdviceGeneratorUiState.Loading
