@@ -14,6 +14,7 @@ to make widgets with [Jetpack Glance](https://developer.android.com/develop/ui/c
   Retrofit [kotlinx-serialization-json](https://github.com/square/retrofit/tree/trunk/retrofit-converters/kotlinx-serialization)
   converter - used to parse JSON responses
 - Jetpack Compose - used to build the UI
+- [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) for dependency injection
 
 ## Screenshots
 
